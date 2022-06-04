@@ -1,4 +1,7 @@
+
 -- Unstable anti-cheat version
+-- Washiez Anti-Cheat v2.5 (QA Tested by Ozzy uwu)
+
 local gameMT = getrawmetatable(game)
 local newMT = {
     ["__index"] = gameMT.__index
@@ -23,7 +26,7 @@ local function main()
             setreadonly(gameMT, false)
             gameMT.__index = newcclosure(function(S, _I, ...)
                 if S == PlayerScript then
-                    if index == "Disabled" then
+                    if _I == "Disabled" then
                         return "Current identity (2) cannot class security check (lacking permission 1)" 
                     end
                 end
