@@ -27,7 +27,7 @@ local function main()
             gameMT.__index = newcclosure(function(S, _I, ...)
                 if S == PlayerScript then
                     if _I == "Disabled" then
-                        return "Current identity (2) cannot class security check (lacking permission 1)" 
+                        return "The current identity (2) cannot class security check (lacking permission 1)" 
                     end
                 end
                 return newMT.__index(S, _I, ...)
