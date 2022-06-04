@@ -55,7 +55,7 @@ end
 
 local hasResponded = false
 for _,v in pairs(LogService:GetLogHistory()) do
-    if v.message == ("Anti-Exploit: Server Requested Validation") then
+    if v.message == "Anti-Exploit: Server Requested Validation" then
         hasResponded = true
     end
 end
@@ -63,10 +63,12 @@ end
 local uService
 if not hasResponded then
     uService = LogService.MessageOut:Connect(function(message)
-        if message == ("Anti-Exploit: Server Requested Validation") then
+        if message == "Anti-Exploit: Server Requested Validation" then
             uService:Disconnect()
-            main()
-            hasResponded = nil
+            task.delay(2,function()
+                main()
+                hasResponded = nil
+            end)
         end
     end)
 else
