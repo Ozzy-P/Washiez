@@ -3,14 +3,6 @@
 -- Washiez Anti-Cheat v3 (QA Tested by Ozzy uwu)
 -- Optimized for Synapse X.
 
-local gameMT = getrawmetatable(game)
-local newMT = {
-    ["__index"] = gameMT.__index
-}
-local newNC = {
-    ["__namecall"] = gameMT.__namecall
-}
-
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CollectionService = game:GetService("CollectionService")
