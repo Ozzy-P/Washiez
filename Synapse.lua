@@ -12,21 +12,69 @@ local RunService = game:GetService("RunService")
 repeat wait() until Players.LocalPlayer ~= nil
 local Player = Players.LocalPlayer
 
-local function main()
-
-    for _,PlayerScript in pairs(Player.PlayerScripts:GetChildren()) do
-        if tonumber(PlayerScript.Name:sub(1,1)) ~= nil then
-            local _gameMT = nil
-            _gameMT = hookmetamethod(game, "__index", function(S, _I)
-                if not checkcaller() and S == PlayerScript and _I == "Disabled" then
-                   return "The current identity (2) cannot class security check (lacking permission 1)" 
-                end
-                return _gameMT(S, _I)
-            end)
-            CollectionService:AddTag(PlayerScript,"MTAPIMUTEX")
+local function _LogService(_M,fn,_D,_R)
+    local hasResponded, _Event = false, Instance.new("BindableEvent")
+    for _,v in pairs(LogService:GetLogHistory()) do
+        if v.message == _M then
+            hasResponded = true   
         end
     end
+    
+    local uService
+    if not hasResponded then
+        uService = LogService.MessageOut:Connect(function(message)
+            if message == _M then
+                uService:Disconnect()
+                task.delay(_D or 0,function()
+                    fn()
+                    hasResponded = nil
+                    if _R then
+                        task.delay(1,function()
+                            _Event:Fire()
+                            task.wait(1)
+                            _Event:Destroy()
+                        end)
+                        return _Event.Event
+                    end
+                end)
+            end
+        end)
+    else
+        fn()
+        uService = nil
+        hasResponded = nil
+        if _R then
+            task.delay(1,function()
+                _Event:Fire()
+                task.wait(1)
+                _Event:Destroy()
+            end)
+            return _Event.Event
+        end
+    end
+end
 
+
+local function main()
+
+    local __LogService = _LogService("Anti-Exploit: Fully Initialized Client", function()
+        for _,PlayerScript in pairs(Player.PlayerScripts:GetChildren()) do
+            if tonumber(PlayerScript.Name:sub(1,1)) ~= nil then
+                local _gameMT = nil
+                _gameMT = hookmetamethod(game, "__index", function(S, _I)
+                    if not checkcaller() and S == PlayerScript and _I == "Disabled" then
+                        return "The current identity (2) cannot class security check (lacking permission 1)" 
+                    end
+                    return _gameMT(S, _I)
+                end)
+                CollectionService:AddTag(PlayerScript,"MTAPIMUTEX")
+            end
+        end
+    end, 2, true)
+
+    __LogService:Wait()
+    __LogService = nil
+    
     local _gameMTNC = nil
     _gameMTNC = hookmetamethod(game, "__namecall", function(self,...)
         local method = getnamecallmethod()
@@ -44,26 +92,5 @@ local function main()
     
 end
 
-local hasResponded = false
-for _,v in pairs(LogService:GetLogHistory()) do
-    if v.message == "Anti-Exploit: Server Requested Validation" then
-        hasResponded = true
-    end
-end
 
-local uService
-if not hasResponded then
-    uService = LogService.MessageOut:Connect(function(message)
-        if message == "Anti-Exploit: Server Requested Validation" then
-            uService:Disconnect()
-            task.delay(2,function()
-                main()
-                hasResponded = nil
-            end)
-        end
-    end)
-else
-    main()
-    uService = nil
-    hasResponded = nil
-end
+_LogService("Anti-Exploit: Server Requested Validation",main,2)
