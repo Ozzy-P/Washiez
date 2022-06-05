@@ -31,14 +31,12 @@ local function _LogService(_M,fn,_D,_R)
                     if _R then
                         task.delay(1,function()
                             _Event:Fire()
-                            task.wait(1)
-                            _Event:Destroy()
                         end)
-                        return _Event.Event
                     end
                 end)
             end
         end)
+        return _Event.Event
     else
         fn()
         uService = nil
@@ -46,8 +44,6 @@ local function _LogService(_M,fn,_D,_R)
         if _R then
             task.delay(1,function()
                 _Event:Fire()
-                task.wait(1)
-                _Event:Destroy()
             end)
             return _Event.Event
         end
