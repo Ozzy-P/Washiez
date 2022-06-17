@@ -1,4 +1,4 @@
--- Unstable anti-cheat version
+-- Stable anti-cheat version
 
 -- Washiez Anti-Cheat v3 (QA Tested by Ozzy uwu)
 -- Optimized for Synapse X.
