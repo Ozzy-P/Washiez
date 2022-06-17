@@ -89,4 +89,4 @@ local function main()
 end
 
 
-_LogService("Anti-Exploit: Server Requested Validation",main,2)
+_LogService("Anti-Exploit: Fully Initialized Client",main,2)
