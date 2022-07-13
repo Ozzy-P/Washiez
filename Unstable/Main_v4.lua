@@ -45,7 +45,7 @@ function get_fn_from_script(ScriptName)
     return found
 end
 
-local marker,AND = nil,false
+local marker,main,AND = nil,nil,false
 for _,Script in next,(LocalPlayer.PlayerScripts:GetChildren()) do
     local Modulus = Script:FindFirstChildOfClass("ModuleScript")
     if Modulus and Modulus.Name == "DefaultSettings" then
@@ -67,6 +67,7 @@ for i,fi in next,script do
             for rbxID,RBXSignal in next, getconnections(game:GetService("ReplicatedStorage").DescendantRemoving) do
                 RBXSignal:Disable()
             end
+            main = v2
             debug.setupvalue(fi,i2,"!")
             warn("---"..i.."---")
             --print("Ida")
@@ -76,12 +77,8 @@ for i,fi in next,script do
 end
 
 if AND then
-    for _,PlayerScript in pairs(LocalPlayer.PlayerScripts:GetChildren()) do
-        if tonumber(PlayerScript.Name:sub(1,1)) and (not PlayerScript:FindFirstChildOfClass("ModuleScript")) then
-            PlayerScript.Disabled = true
-        end
-    end
-        for Iv, Ev in next, game:GetService("ReplicatedStorage"):GetChildren() do
+    main.Disabled = not main.Disabled 
+    for Iv, Ev in next, game:GetService("ReplicatedStorage"):GetChildren() do
         if Ev.Name:find("AE") then
             Ev:Destroy()
         end
