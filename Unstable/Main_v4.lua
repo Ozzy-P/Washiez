@@ -30,16 +30,14 @@ end
 
 -- Made by vinidalvino
 -- https://v3rmillion.net/showthread.php?tid=992227
-function get_fn_from_script(ScriptName,parent_name)
+function get_fn_from_script(ScriptName)
     assert(ScriptName,"No script name provided")
     local found = {}
     for _,Env in pairs(debug.getregistry()) do
         if type(Env) == "function" and not is_protosmasher_closure(Env) and islclosure(Env) then
             pcall(function()
-                if not parent_name then
-                    if getfenv(Env).script.Name == ScriptName then
-                        table.insert(found,Env)
-                    end
+                if getfenv(Env).script.Name == ScriptName then
+                    table.insert(found,Env)
                 end
             end)
         end
