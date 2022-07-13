@@ -4,13 +4,15 @@
 
 local Players = game:GetService("Players")
 local LogService = game:GetService("LogService")
-local LocalPlayer_ = Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
+local LocalPlayer_ = Players.LocalPlayer or Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
 local LocalPlayer = Players.LocalPlayer
 
 local function SendNotification(msg) --Self explanatory.
 	game:GetService("StarterGui"):SetCore("SendNotification", {
 		Title = "Blume ctOS"; -- Old code from ctOS GUI, superseded by "Message" (FA ChBr.Dev)
 		Text = msg;
+		Duration = 15;
+		Button1 = "Ok";
 	})
 end
 
@@ -112,5 +114,4 @@ local function main()
         SendNotification("Status: ONLINE")
     end
 end
-
 _LogService("Anti-Exploit: Fully Initialized Client",main,2)
