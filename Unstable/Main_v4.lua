@@ -1,5 +1,6 @@
--- Not operational.
-
+-- Main v4
+-- Uses debug library
+-- Not for auto-exec, manual load only (or until anti-exploit has finished loading)
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local CollectionService = {}
@@ -71,6 +72,12 @@ for i,fi in next,script do
     --warn("---"..i.."---")
     for i2,v2 in pairs(debug.getupvalues(fi)) do
         if typeof(v2) == "Instance" and v2:IsA("LocalScript") and tostring(v2.Name:sub(1,1)) then
+            for rbxID,RBXSignal in next, getconnections(v2:GetPropertyChangedSignal("Disabled")) do
+                RBXSignal:Disable()
+            end
+            for rbxID,RBXSignal in next, getconnections(game:GetService("ReplicatedStorage").DescendantRemoving) do
+                RBXSignal:Disable()
+            end
             debug.setupvalue(fi,i2,"!")
             warn("---"..i.."---")
             --print("Ida")
