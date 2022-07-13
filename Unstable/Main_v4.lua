@@ -1,6 +1,7 @@
 -- Main v4
 -- Uses debug library
 -- Not for auto-exec, manual load only (or until anti-exploit has finished loading)
+
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local CollectionService = {}
@@ -29,7 +30,7 @@ end
 
 -- Made by vinidalvino
 -- https://v3rmillion.net/showthread.php?tid=992227
-function get_fn_from_script(ScriptName,parent_name,isShowingInfo)
+function get_fn_from_script(ScriptName,parent_name)
     assert(ScriptName,"No script name provided")
     local found = {}
     for _,Env in pairs(debug.getregistry()) do
@@ -37,25 +38,12 @@ function get_fn_from_script(ScriptName,parent_name,isShowingInfo)
             pcall(function()
                 if not parent_name then
                     if getfenv(Env).script.Name == ScriptName then
-                        if isShowingInfo then
-                            table.insert(found,debug.getinfo(Env))
-                        else
-                            table.insert(found,Env)
-                        end
-                    end
-                else
-                    if getfenv(Env).script.Name == ScriptName and getfenv(Env).script.Parent.Name == parent_name then
-                        if isShowingInfo then
-                            table.insert(found,debug.getinfo)
-                        else
-                            table.insert(found,Env)
-                        end
+                        table.insert(found,Env)
                     end
                 end
             end)
         end
     end
-    if found == 0 then error("Could not find any script with the name you provided",2) end
     return found
 end
 
@@ -67,7 +55,10 @@ for _,Script in next,(LocalPlayer.PlayerScripts:GetChildren()) do
     end
 end
 
-script = get_fn_from_script(marker.Name,"PlayerScripts")
+script = get_fn_from_script(marker.Name)
+if #script == 0 then
+    error("Could not locate asset.")
+end
 for i,fi in next,script do
     --warn("---"..i.."---")
     for i2,v2 in pairs(debug.getupvalues(fi)) do
