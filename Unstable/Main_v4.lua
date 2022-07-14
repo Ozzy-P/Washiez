@@ -1,6 +1,6 @@
 -- Main v4
 -- Uses debug library
--- Auto-initialized at client startup.
+-- Auto-initializes at client startup.
 
 local Players = game:GetService("Players")
 local LogService = game:GetService("LogService")
