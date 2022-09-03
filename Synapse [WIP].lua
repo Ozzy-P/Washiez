@@ -1,4 +1,5 @@
 -- Unstable anti-cheat version
+-- WIP (Upgrading Synapse.lua to v4)
 
 -- Washiez Anti-Cheat v3.5 (QA Tested by Ozzy uwu)
 
