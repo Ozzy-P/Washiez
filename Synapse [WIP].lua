@@ -1,7 +1,8 @@
 -- Unstable anti-cheat version
 -- WIP (Upgrading Synapse.lua to v4)
-
 -- Washiez Anti-Cheat v3.5 (QA Tested by Ozzy uwu)
+
+-- Optimized for Synapse X.
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -12,18 +13,50 @@ local RunService = game:GetService("RunService")
 repeat wait() until Players.LocalPlayer ~= nil
 local Player = Players.LocalPlayer
 
-local function _LogService(str,func,delay,wait)
-    task.delay(0,func)
-    if wait then
-        task.wait(delay)
-    end       
+local function _LogService(_M,fn,_D,_R)
+    local hasResponded, _Event = false, Instance.new("BindableEvent")
+    for _,v in pairs(LogService:GetLogHistory()) do
+        if v.message == _M then
+            hasResponded = true   
+        end
+    end
+    
+    local uService
+    if not hasResponded then
+        uService = LogService.MessageOut:Connect(function(message)
+            if message == _M then
+                uService:Disconnect()
+                task.delay(_D or 0,function()
+                    fn()
+                    hasResponded = nil
+                    if _R then
+                        task.delay(1,function()
+                            _Event:Fire()
+                        end)
+                    end
+                end)
+            end
+        end)
+        return _Event.Event
+    else
+        fn()
+        uService = nil
+        hasResponded = nil
+        if _R then
+            task.delay(1,function()
+                _Event:Fire()
+            end)
+            return _Event.Event
+        end
+    end
 end
+
 
 local function main()
 
     local __LogService = _LogService("Anti-Exploit: Fully Initialized Client", function()
-        Player.PlayerScripts.ChildAdded:Connect(function(PlayerScript)
-            if tonumber(PlayerScript.Name:sub(1,1)) ~= nil or Player.Name == "ClientProtection" or Player.Name == "§" then
+        for _,PlayerScript in pairs(Player.PlayerScripts:GetChildren()) do
+            if tonumber(PlayerScript.Name:sub(1,1)) ~= nil then
                 local _gameMT = nil
                 _gameMT = hookmetamethod(game, "__index", function(S, _I)
                     if not checkcaller() and S == PlayerScript and _I == "Disabled" then
@@ -33,10 +66,10 @@ local function main()
                 end)
                 CollectionService:AddTag(PlayerScript,"MTAPIMUTEX")
             end
-        end)
+        end
     end, 2, true)
 
-    task.wait(2)
+    __LogService:Wait()
     __LogService = nil
     
     local _gameMTNC = nil
@@ -56,4 +89,5 @@ local function main()
     
 end
 
-main()
+
+_LogService("Anti-Exploit: Fully Initialized Client",main,2)
