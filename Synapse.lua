@@ -1,6 +1,7 @@
 -- Stable anti-cheat version
 
 -- Washiez Anti-Cheat v3 (QA Tested by Ozzy uwu)
+-- Downgraded from v4 for compatibility.
 
 -- Optimized for Synapse X.
 -- Auto-attach only.
