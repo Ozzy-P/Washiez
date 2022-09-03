@@ -1,4 +1,4 @@
--- Washiez Anti-Cheat v2 (QA Tested by Ozzy uwu)
+-- Washiez Anti-Cheat v3 (QA Tested by Ozzy uwu)
 
 -- Credits to 3dsboy08 for MTAPI
 
@@ -12,7 +12,15 @@ local Player = Players.LocalPlayer
 
 local detectionArgs = {"BanMe","ExistsOnServer","MatchOnServer"}
 
-ReplicatedStorage:WaitForChild("AEComFunc"):AddCallHook("InvokeServer", function(o, ...)
+local function WaitForChildOfClass(parent, class)
+	local child = parent:FindFirstChildOfClass(class)
+	while not child or child.ClassName ~= class do
+		child = parent.ChildAdded:Wait()
+	end
+	return child
+end
+
+WaitForChildOfClass(ReplicatedStorage,"RemoteFunction"):AddCallHook("InvokeServer", function(o, ...)
     local args = {...}
     if not checkcaller() then
         if table.find(detectionArgs,args[1]) then
@@ -23,6 +31,7 @@ ReplicatedStorage:WaitForChild("AEComFunc"):AddCallHook("InvokeServer", function
     end
 end)
 
+print("Server is secure.")
 
 local mt = getrawmetatable(game)
 local old = mt.__namecall
