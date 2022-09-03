@@ -12,44 +12,12 @@ local RunService = game:GetService("RunService")
 repeat wait() until Players.LocalPlayer ~= nil
 local Player = Players.LocalPlayer
 
-local function _LogService(_M,fn,_D,_R)
-    local hasResponded, _Event = false, Instance.new("BindableEvent")
-    for _,v in pairs(LogService:GetLogHistory()) do
-        if v.message == _M then
-            hasResponded = true   
-        end
-    end
-    
-    local uService
-    if not hasResponded then
-        uService = LogService.MessageOut:Connect(function(message)
-            if message == _M then
-                uService:Disconnect()
-                task.delay(_D or 0,function()
-                    fn()
-                    hasResponded = nil
-                    if _R then
-                        task.delay(1,function()
-                            _Event:Fire()
-                        end)
-                    end
-                end)
-            end
-        end)
-        return _Event.Event
-    else
-        fn()
-        uService = nil
-        hasResponded = nil
-        if _R then
-            task.delay(1,function()
-                _Event:Fire()
-            end)
-            return _Event.Event
-        end
-    end
+local function _LogService(str,func,delay,wait)
+    task.delay(0,func)
+    if wait then
+        task.wait(delay)
+    end       
 end
-
 
 local function main()
 
@@ -89,4 +57,8 @@ local function main()
 end
 
 
-_LogService("Anti-Exploit: Fully Initialized Client",main,2)
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+main()
