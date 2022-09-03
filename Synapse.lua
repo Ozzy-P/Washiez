@@ -1,8 +1,9 @@
--- Unstable anti-cheat version
--- WIP (Upgrading Synapse.lua to v4)
--- Washiez Anti-Cheat v3.5 (QA Tested by Ozzy uwu)
+-- Stable anti-cheat version
+
+-- Washiez Anti-Cheat v3 (QA Tested by Ozzy uwu)
 
 -- Optimized for Synapse X.
+-- Auto-attach only.
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
