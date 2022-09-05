@@ -1,7 +1,10 @@
--- Unstable anti-cheat version
+-- Stable anti-cheat version
 
 -- Washiez Anti-Cheat v3 (QA Tested by Ozzy uwu)
+-- Downgraded from v4 for compatibility.
+
 -- Optimized for Synapse X.
+-- Auto-attach only.
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -31,14 +34,12 @@ local function _LogService(_M,fn,_D,_R)
                     if _R then
                         task.delay(1,function()
                             _Event:Fire()
-                            task.wait(1)
-                            _Event:Destroy()
                         end)
-                        return _Event.Event
                     end
                 end)
             end
         end)
+        return _Event.Event
     else
         fn()
         uService = nil
@@ -46,8 +47,6 @@ local function _LogService(_M,fn,_D,_R)
         if _R then
             task.delay(1,function()
                 _Event:Fire()
-                task.wait(1)
-                _Event:Destroy()
             end)
             return _Event.Event
         end
@@ -93,4 +92,4 @@ local function main()
 end
 
 
-_LogService("Anti-Exploit: Server Requested Validation",main,2)
+_LogService("Anti-Exploit: Fully Initialized Client",main,2)
