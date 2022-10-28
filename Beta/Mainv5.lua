@@ -10,7 +10,7 @@ local function SendNotification(msg)
 	})
 end
 
-local function get_fn_from_script()
+local function setFn()
     local found = {}
     for _,Env in pairs(debug.getregistry()) do
         if type(Env) == "function" and not is_protosmasher_closure(Env) and islclosure(Env) then
@@ -29,9 +29,9 @@ local function get_fn_from_script()
 end
 
 local function main()
-    script = get_fn_from_script()
-    if #script == 0 then
-        error("Could not locate asset.")
+    fn = setFn()
+    if #fn == 0 then
+        error("Could not set fn")
     end
 
     SendNotification("Status: ONLINE")
