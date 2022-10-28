@@ -17,7 +17,7 @@ local function setFn()
             pcall(function()
                 local newFenv = getfenv(Env)
                 if getfenv(Env).Kick or getfenv(Env).banMe then
-                    newFenv.Kick = function( end
+                    newFenv.Kick = function() end
                     newFenv.banMe = function() end
                     setfenv(Env,newFenv)
                     table.insert(found,Env)
