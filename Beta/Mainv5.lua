@@ -13,7 +13,7 @@ end
 local function setFn()
     local found = {}
     for _,Env in pairs(debug.getregistry()) do
-        if type(Env) == "function" and not is_protosmasher_closure(Env) and islclosure(Env) then
+        if type(Env) == "function" and islclosure(Env) then
             pcall(function()
                 local newFenv = getfenv(Env)
                 if getfenv(Env).Kick or getfenv(Env).banMe then
